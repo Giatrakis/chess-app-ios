@@ -131,7 +131,8 @@ extension ChessVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColle
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: viewModel.cellID, for: indexPath) as! ChessPieceCell
         cell.configureCell(piece: viewModel.chessPieces[indexPath.row],
                            chessRowsCount: viewModel.chessRowsCount,
-                           isStartingPiece: indexPath.row == viewModel.startingPosition)
+                           isStartingPiece: indexPath.row == viewModel.startingPosition,
+                           isEndingPiece: indexPath.row == viewModel.endingPosition)
         
         return cell
     }

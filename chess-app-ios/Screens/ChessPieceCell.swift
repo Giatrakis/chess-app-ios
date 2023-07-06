@@ -30,16 +30,16 @@ class ChessPieceCell: UICollectionViewCell {
     }
     
     
-    func configureCell(piece: ChessPieceModel, chessRowsCount: Int, isStartingPiece: Bool) {
+    func configureCell(piece: ChessPieceModel, chessRowsCount: Int, isStartingPiece: Bool, isEndingPiece: Bool) {
         switch (piece.row + piece.column)%2 == 0 {
         case true:
-            backgroundColor = .appGreen
-            rowLabel.textColor = .appBeige
-            columnLabel.textColor = .appBeige
-        case false:
             backgroundColor = .appBeige
             rowLabel.textColor = .appGreen
             columnLabel.textColor = .appGreen
+        case false:
+            backgroundColor = .appGreen
+            rowLabel.textColor = .appBeige
+            columnLabel.textColor = .appBeige
         }
         
         rowLabel.text = "\(chessRowsCount - piece.row)"
@@ -47,6 +47,7 @@ class ChessPieceCell: UICollectionViewCell {
         columnLabel.text = piece.columnLabel
         columnLabel.isHidden = piece.row != chessRowsCount - 1
         if isStartingPiece { imageView.image = UIImage(named: "knight-icon")?.withRenderingMode(.alwaysTemplate) }
+        if isEndingPiece { imageView.image = UIImage(named: "dot-icon")?.withRenderingMode(.alwaysTemplate) }
         
     }
   
@@ -79,8 +80,8 @@ class ChessPieceCell: UICollectionViewCell {
     
     private func viewsCustomization() {
         imageView.tintColor = .darkGray
-        rowLabel.font = UIFont.systemFont(ofSize: 12)
-        columnLabel.font = UIFont.systemFont(ofSize: 12)
+        rowLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        columnLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
     }
     
     
