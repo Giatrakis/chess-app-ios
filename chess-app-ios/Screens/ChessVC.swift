@@ -11,6 +11,8 @@ class ChessVC: UIViewController {
     private let stackView = UIStackView()
     private let descriptionLabel = UILabel()
     private var collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout.init())
+    
+    private let cellID = "ChessPieceID"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +71,7 @@ extension ChessVC {
         collectionView.backgroundColor = .red.withAlphaComponent(0.3)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.register(ChessPieceCell.self, forCellWithReuseIdentifier: cellID)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(collectionView)
