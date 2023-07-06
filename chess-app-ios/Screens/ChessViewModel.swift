@@ -8,7 +8,8 @@
 import Foundation
 
 final class ChessViewModel {
-    private let chessRowsCount = 6
+    let chessRowsCount = 6
+    let cellID = "ChessPieceID"
     var chessPieces: [ChessPieceModel] = []
     
     

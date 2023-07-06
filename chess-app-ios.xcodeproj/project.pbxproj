@@ -10,6 +10,8 @@
 		FA3C331E2A574A2B0022BE3C /* ChessPieceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3C331D2A574A2B0022BE3C /* ChessPieceCell.swift */; };
 		FA3C33202A574B620022BE3C /* ChessViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3C331F2A574B620022BE3C /* ChessViewModel.swift */; };
 		FA3C33232A574BDB0022BE3C /* ChessPieceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3C33222A574BDB0022BE3C /* ChessPieceModel.swift */; };
+		FA3C33252A574F410022BE3C /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA3C33242A574F410022BE3C /* Colors.xcassets */; };
+		FA3C33282A574FC30022BE3C /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3C33272A574FC30022BE3C /* UIColor+.swift */; };
 		FA9093C22A56FB310038B995 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9093C12A56FB310038B995 /* AppDelegate.swift */; };
 		FA9093C42A56FB310038B995 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9093C32A56FB310038B995 /* SceneDelegate.swift */; };
 		FA9093C62A56FB310038B995 /* ChessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9093C52A56FB310038B995 /* ChessVC.swift */; };
@@ -21,6 +23,8 @@
 		FA3C331D2A574A2B0022BE3C /* ChessPieceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessPieceCell.swift; sourceTree = "<group>"; };
 		FA3C331F2A574B620022BE3C /* ChessViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessViewModel.swift; sourceTree = "<group>"; };
 		FA3C33222A574BDB0022BE3C /* ChessPieceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessPieceModel.swift; sourceTree = "<group>"; };
+		FA3C33242A574F410022BE3C /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		FA3C33272A574FC30022BE3C /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		FA9093BE2A56FB310038B995 /* chess-app-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "chess-app-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA9093C12A56FB310038B995 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA9093C32A56FB310038B995 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +53,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		FA3C33262A574FB50022BE3C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				FA3C33272A574FC30022BE3C /* UIColor+.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		FA9093B52A56FB310038B995 = {
 			isa = PBXGroup;
 			children = (
@@ -69,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				FA9093DE2A5710DB0038B995 /* App */,
+				FA3C33262A574FB50022BE3C /* Extensions */,
 				FA3C33212A574BC50022BE3C /* Models */,
 				FA9093DF2A5710ED0038B995 /* Screens */,
 			);
@@ -79,10 +92,11 @@
 			isa = PBXGroup;
 			children = (
 				FA9093C12A56FB310038B995 /* AppDelegate.swift */,
-				FA9093C32A56FB310038B995 /* SceneDelegate.swift */,
 				FA9093CA2A56FB310038B995 /* Assets.xcassets */,
-				FA9093CC2A56FB310038B995 /* LaunchScreen.storyboard */,
+				FA3C33242A574F410022BE3C /* Colors.xcassets */,
 				FA9093CF2A56FB310038B995 /* Info.plist */,
+				FA9093CC2A56FB310038B995 /* LaunchScreen.storyboard */,
+				FA9093C32A56FB310038B995 /* SceneDelegate.swift */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -155,6 +169,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA3C33252A574F410022BE3C /* Colors.xcassets in Resources */,
 				FA9093CE2A56FB310038B995 /* LaunchScreen.storyboard in Resources */,
 				FA9093CB2A56FB310038B995 /* Assets.xcassets in Resources */,
 			);
@@ -173,6 +188,7 @@
 				FA3C33202A574B620022BE3C /* ChessViewModel.swift in Sources */,
 				FA3C331E2A574A2B0022BE3C /* ChessPieceCell.swift in Sources */,
 				FA3C33232A574BDB0022BE3C /* ChessPieceModel.swift in Sources */,
+				FA3C33282A574FC30022BE3C /* UIColor+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

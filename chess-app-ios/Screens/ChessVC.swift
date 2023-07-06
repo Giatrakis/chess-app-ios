@@ -12,7 +12,6 @@ class ChessVC: UIViewController {
     private let descriptionLabel = UILabel()
     private var collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout.init())
     
-    private let cellID = "ChessPieceID"
     private var viewModel = ChessViewModel()
 
     override func viewDidLoad() {
@@ -66,14 +65,13 @@ extension ChessVC {
     private func configureCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 2
-        layout.minimumInteritemSpacing = 2
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .red.withAlphaComponent(0.3)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(ChessPieceCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView.register(ChessPieceCell.self, forCellWithReuseIdentifier: viewModel.cellID)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(collectionView)
@@ -86,12 +84,21 @@ extension ChessVC {
 
 
 //MARK: - Collection View
-extension ChessVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ChessVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        0
+        viewModel.chessPieces.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return UICollectionViewCell()
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: viewModel.cellID, for: indexPath) as! ChessPieceCell
+        cell.configureCell(piece: viewModel.chessPieces[indexPath.row], chessRowsCount: viewModel.chessRowsCount)
+        
+        return cell
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width / CGFloat(viewModel.chessRowsCount),
+                      height: collectionView.frame.width / CGFloat(viewModel.chessRowsCount))
     }
 }

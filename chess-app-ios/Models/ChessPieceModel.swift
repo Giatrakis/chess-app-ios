@@ -10,4 +10,10 @@ import Foundation
 struct ChessPieceModel {
     let row: Int
     let column: Int
+    
+    var columnLabel: String {
+        let alphabet = (UnicodeScalar("a").value...UnicodeScalar("z").value).compactMap { UnicodeScalar($0) }.map({ String($0) })
+        guard row < alphabet.count else { return "" }
+        return alphabet[column]
+    }
 }
