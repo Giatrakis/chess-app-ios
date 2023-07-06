@@ -129,7 +129,9 @@ extension ChessVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColle
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: viewModel.cellID, for: indexPath) as! ChessPieceCell
-        cell.configureCell(piece: viewModel.chessPieces[indexPath.row], chessRowsCount: viewModel.chessRowsCount)
+        cell.configureCell(piece: viewModel.chessPieces[indexPath.row],
+                           chessRowsCount: viewModel.chessRowsCount,
+                           isStartingPiece: indexPath.row == viewModel.startingPosition)
         
         return cell
     }
@@ -142,6 +144,7 @@ extension ChessVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColle
     
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.reloadData()
         viewModel.tapPieceIn(position: indexPath.row)
         headerLabel.text = viewModel.headerTitle
         startingPositionLabel.text = viewModel.startingPositionLabelText
