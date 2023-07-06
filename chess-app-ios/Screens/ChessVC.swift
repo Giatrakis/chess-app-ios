@@ -13,11 +13,13 @@ class ChessVC: UIViewController {
     private var collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout.init())
     
     private let cellID = "ChessPieceID"
+    private var viewModel = ChessViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         viewsSetup()
+        viewModel.createChess()
     }
 }
 
