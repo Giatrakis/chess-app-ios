@@ -16,4 +16,9 @@ struct ChessPieceModel {
         guard row < alphabet.count else { return "" }
         return alphabet[column]
     }
+    
+    
+    func selection(chessRowsCount: Int) -> String {
+        "\(columnLabel)\(chessRowsCount - row)"
+    }
 }

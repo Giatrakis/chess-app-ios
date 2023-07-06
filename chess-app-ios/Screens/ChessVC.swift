@@ -9,8 +9,10 @@ import UIKit
 
 class ChessVC: UIViewController {
     private let stackView = UIStackView()
-    private let descriptionLabel = UILabel()
+    private let headerLabel = UILabel()
     private var collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout.init())
+    private let startingPositionLabel = UILabel()
+    private let endingPositionLabel = UILabel()
     
     private var viewModel = ChessViewModel()
 
@@ -31,6 +33,7 @@ extension ChessVC {
         configureStackView()
         configureDescriptionLabel()
         configureCollectionView()
+        configureSelectionLabels()
     }
     
     
@@ -52,15 +55,16 @@ extension ChessVC {
     
     
     private func configureDescriptionLabel() {
-        descriptionLabel.textAlignment = .center
-        descriptionLabel.font = UIFont.systemFont(ofSize: 26, weight: .bold)
-        descriptionLabel.text = "Select start position"
+        headerLabel.textAlignment = .center
+        headerLabel.font = UIFont.systemFont(ofSize: 26, weight: .bold)
+        headerLabel.text = viewModel.headerTitle
         
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        stackView.addArrangedSubview(descriptionLabel)
-        descriptionLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        descriptionLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(headerLabel)
+        headerLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        headerLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
+    
     
     private func configureCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -78,6 +82,40 @@ extension ChessVC {
         NSLayoutConstraint.activate([
             collectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             collectionView.heightAnchor.constraint(equalTo: stackView.widthAnchor)
+        ])
+    }
+    
+    
+    private func configureSelectionLabels() {
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(containerView)
+        containerView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+        
+        startingPositionLabel.text = viewModel.startingPositionLabelText
+        startingPositionLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        startingPositionLabel.textAlignment = .center
+        startingPositionLabel.numberOfLines = 0
+        startingPositionLabel.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(startingPositionLabel)
+        NSLayoutConstraint.activate([
+            startingPositionLabel.topAnchor.constraint(equalTo: containerView.topAnchor),
+            startingPositionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            startingPositionLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            startingPositionLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.5)
+        ])
+        
+        endingPositionLabel.text = viewModel.endingPositionLabelText
+        endingPositionLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        endingPositionLabel.textAlignment = .center
+        endingPositionLabel.numberOfLines = 0
+        endingPositionLabel.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(endingPositionLabel)
+        NSLayoutConstraint.activate([
+            endingPositionLabel.topAnchor.constraint(equalTo: containerView.topAnchor),
+            endingPositionLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            endingPositionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            endingPositionLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.5)
         ])
     }
 }
@@ -100,5 +138,13 @@ extension ChessVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColle
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width / CGFloat(viewModel.chessRowsCount),
                       height: collectionView.frame.width / CGFloat(viewModel.chessRowsCount))
+    }
+    
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.tapPieceIn(position: indexPath.row)
+        headerLabel.text = viewModel.headerTitle
+        startingPositionLabel.text = viewModel.startingPositionLabelText
+        endingPositionLabel.text = viewModel.endingPositionLabelText
     }
 }
