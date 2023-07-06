@@ -56,7 +56,6 @@
 			children = (
 				FA9093DE2A5710DB0038B995 /* App */,
 				FA9093DF2A5710ED0038B995 /* Screens */,
-				FA9093C52A56FB310038B995 /* ChessVC.swift */,
 			);
 			path = "chess-app-ios";
 			sourceTree = "<group>";
@@ -76,6 +75,7 @@
 		FA9093DF2A5710ED0038B995 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				FA9093C52A56FB310038B995 /* ChessVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
