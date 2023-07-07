@@ -8,11 +8,14 @@
 import UIKit
 
 class ChessVC: UIViewController {
+    private let scrollView = UIScrollView()
     private let stackView = UIStackView()
     private let headerLabel = UILabel()
     private var collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout.init())
     private let startingPositionLabel = UILabel()
     private let endingPositionLabel = UILabel()
+    private let solutionsLabel = UILabel()
+    private var resetButton = UIButton()
     
     private var viewModel = ChessViewModel()
 
@@ -22,6 +25,22 @@ class ChessVC: UIViewController {
         viewsSetup()
         viewModel.createChess()
     }
+    
+    
+    @objc private func resetAction() {
+        viewModel.reset()
+        updateUI()
+        resetButton.isHidden = true
+        collectionView.reloadData()
+    }
+    
+    
+    private func updateUI() {
+        headerLabel.text = viewModel.headerTitle
+        startingPositionLabel.text = viewModel.startingPositionLabelText
+        endingPositionLabel.text = viewModel.endingPositionLabelText
+        solutionsLabel.text = viewModel.solutionsText
+    }
 }
 
 
@@ -30,20 +49,37 @@ extension ChessVC {
     private func viewsSetup() {
         view.backgroundColor = .white
         title = "Chess Game"
+        configureScrollView()
         configureStackView()
         configureDescriptionLabel()
         configureCollectionView()
         configureSelectionLabels()
+        configureSolutionsLabel()
+        configureResetButton()
+    }
+    
+    
+    private func configureScrollView() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
     }
     
     
     private func configureStackView() {
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stackView)
+        scrollView.addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
         
         stackView.axis = .vertical
@@ -58,11 +94,12 @@ extension ChessVC {
         headerLabel.textAlignment = .center
         headerLabel.font = UIFont.systemFont(ofSize: 26, weight: .bold)
         headerLabel.text = viewModel.headerTitle
+        headerLabel.allowsDefaultTighteningForTruncation = true
+        headerLabel.minimumScaleFactor = 0.85
         
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(headerLabel)
         headerLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        headerLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     
@@ -118,6 +155,39 @@ extension ChessVC {
             endingPositionLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.5)
         ])
     }
+    
+    
+    private func configureSolutionsLabel() {
+        solutionsLabel.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(solutionsLabel)
+        NSLayoutConstraint.activate([
+            solutionsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            solutionsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+        ])
+        
+        solutionsLabel.numberOfLines = 0
+        solutionsLabel.allowsDefaultTighteningForTruncation = true
+        solutionsLabel.minimumScaleFactor = 0.85
+        solutionsLabel.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+    }
+    
+    
+    private func configureResetButton() {
+        resetButton.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(resetButton)
+        NSLayoutConstraint.activate([
+            resetButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            resetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            resetButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        resetButton.setTitle("RESET", for: .normal)
+        resetButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        resetButton.backgroundColor = .darkGray
+        resetButton.layer.cornerRadius = 12
+        resetButton.isHidden = true
+        resetButton.addTarget(self, action: #selector(resetAction), for: .touchUpInside)
+    }
 }
 
 
@@ -147,8 +217,7 @@ extension ChessVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColle
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.reloadData()
         viewModel.tapPieceIn(position: indexPath.row)
-        headerLabel.text = viewModel.headerTitle
-        startingPositionLabel.text = viewModel.startingPositionLabelText
-        endingPositionLabel.text = viewModel.endingPositionLabelText
+        updateUI()
+        resetButton.isHidden = false
     }
 }

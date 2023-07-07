@@ -14,7 +14,7 @@ final class ChessViewModel {
     var chessPieces: [ChessPieceModel] = []
     var startingPositionIndex: Int? = nil
     var endingPositionIndex: Int? = nil
-    var finalMovements: [[ChessPieceModel]] = [[]]
+    var finalMovements: [[ChessPieceModel]] = []
     
     var headerTitle: String {
         switch startingPositionIndex == nil {
@@ -23,7 +23,12 @@ final class ChessViewModel {
         case false where endingPositionIndex == nil:
             return "Select ending position"
         default:
-            return "You need x moves"
+            if let firstMove = finalMovements.first {
+                return "You need \(firstMove.count) \(firstMove.count == 1 ? "move" : "moves")"
+            }
+            
+            guard let endingPositionIndex = endingPositionIndex else { return "" }
+            return "You can't go to \(chessPieces[endingPositionIndex].selection(chessRowsCount: chessRowsCount)) with \(maxAttempts) moves"
         }
     }
     
@@ -37,6 +42,17 @@ final class ChessViewModel {
         return "Ending Position\n\(chessPieces[endingPosition].selection(chessRowsCount: chessRowsCount))"
     }
     
+    var solutionsText: String {
+        switch finalMovements.isEmpty {
+        case true:
+            return ""
+        case false:
+            return "Solutions:\n" + finalMovements.map({ $0.map({ $0.selection(chessRowsCount: chessRowsCount) }).joined(separator: " > ") }).joined(separator: "\n")
+        }
+    }
+    
+    
+//MARK: - Methods
     
     func createChess() {
         for row in 0..<chessRowsCount {
@@ -44,6 +60,13 @@ final class ChessViewModel {
                 chessPieces.append(ChessPieceModel(row: row, column: column, index: (row * chessRowsCount) + column))
             }
         }
+    }
+    
+    
+    func reset() {
+        startingPositionIndex = nil
+        endingPositionIndex = nil
+        finalMovements.removeAll()
     }
     
     
@@ -104,5 +127,6 @@ final class ChessViewModel {
         }
         
         finalMovements.removeAll(where: { $0.isEmpty })
+        finalMovements.sort(by: { $0.count < $1.count })
     }
 }
