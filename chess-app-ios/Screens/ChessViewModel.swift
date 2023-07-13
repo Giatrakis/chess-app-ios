@@ -8,8 +8,7 @@
 import Foundation
 
 final class ChessViewModel {
-    let chessRowsCount = 6
-    let maxAttempts = 3
+    let chessRowsCount = 8
     let cellID = "ChessPieceID"
     var chessPieces: [ChessPieceModel] = []
     var startingPositionIndex: Int? = nil
@@ -28,7 +27,7 @@ final class ChessViewModel {
             }
             
             guard let endingPositionIndex = endingPositionIndex else { return "" }
-            return "You can't go to \(chessPieces[endingPositionIndex].selection(chessRowsCount: chessRowsCount)) with \(maxAttempts) moves"
+            return "You can't go to \(chessPieces[endingPositionIndex].selection(chessRowsCount: chessRowsCount)) with 3 moves"
         }
     }
     
@@ -101,32 +100,26 @@ final class ChessViewModel {
     
     private func movementsAlgorithm() {
         guard let startingPositionIndex = startingPositionIndex, let endingPositionIndex = endingPositionIndex else { return }
-        let movements = calculatePossibleMovements(fromIndex: startingPositionIndex)
-        finalMovements = Array(repeating: [chessPieces[startingPositionIndex]], count: movements.count)
+        let firstMovements = calculatePossibleMovements(fromIndex: startingPositionIndex)
+        var finalMovements: [[ChessPieceModel]] = []
         
-        guard !movements.contains(where: { $0.index == endingPositionIndex }) else {
-            finalMovements = [movements.filter({ $0.index == endingPositionIndex })]
-            return
-        }
-        
-        for movementIndex in 0..<movements.count {
-            finalMovements[movementIndex].append(movements[movementIndex])
-            
-            for attempt in 1..<maxAttempts {
-                if let destinationIndex = movements[movementIndex].index {
-                    let currentMovements = calculatePossibleMovements(fromIndex: destinationIndex)
-                    
-                    if let finalMovementIndex = currentMovements.firstIndex(where: { $0.index == endingPositionIndex }) {
-                        finalMovements[movementIndex].append(currentMovements[finalMovementIndex])
-                        break
+        for firstMovement in firstMovements {
+            finalMovements.append([firstMovement])
+
+            if let index = firstMovement.index, index != endingPositionIndex {
+                let secondMovements = calculatePossibleMovements(fromIndex: index)
+
+                for secondMovement in secondMovements {
+                    finalMovements.append([firstMovement, secondMovement])
+
+                    if let secondMovementIndex = secondMovement.index {
+                        calculatePossibleMovements(fromIndex: secondMovementIndex)
+                            .forEach({ finalMovements.append([firstMovement, secondMovement, $0]) })
                     }
-                    
-                    if attempt == 2 { finalMovements[movementIndex].removeAll() }
                 }
             }
         }
         
-        finalMovements.removeAll(where: { $0.isEmpty })
-        finalMovements.sort(by: { $0.count < $1.count })
+        self.finalMovements = finalMovements.filter({ $0.contains(where: { $0.index == endingPositionIndex }) }).sorted(by: { $0.count < $1.count })
     }
 }
